@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <Navbar />
-        <main className='flex flex-col items-center justify-around px-24 py-2'>
+        <main className='flex flex-col items-center justify-start px-24 py-2'>
           {children}
         </main>
       </body>

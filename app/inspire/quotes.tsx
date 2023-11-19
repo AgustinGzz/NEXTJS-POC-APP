@@ -17,10 +17,14 @@ const Quotes: React.FC = async () => {
   const quote = (await response.json()) as Quotes;
   const selectedQuote = quote[0];
   return (
-    <section>
-      <h2>{selectedQuote.q}</h2>
-      <p>{selectedQuote.a}</p>
-      <Button />
+    <section className='mt-4'>
+      <div className='block max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
+        <h2 className='mb-2 text-center'>{selectedQuote.q}</h2>
+        <p className='text-right'>
+          <em>{selectedQuote.a}</em>
+        </p>
+        <Button />
+      </div>
     </section>
   );
 };
