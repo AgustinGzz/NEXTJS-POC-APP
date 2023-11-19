@@ -1,6 +1,6 @@
 import { readFromJSON, writeToJSON } from "@/utils/fileSystem";
-import Checkbox from "./components/checkbox";
 import { revalidatePath } from "next/cache";
+import Checkbox from "../components/checkbox";
 
 const WriteComponent: React.FC = async () => {
   async function saveFile(formData: FormData) {
@@ -14,7 +14,7 @@ const WriteComponent: React.FC = async () => {
     }
     console.log(data);
     writeToJSON(data);
-    revalidatePath("/");
+    revalidatePath("/admin-panel");
   }
   const flags = await readFromJSON();
   return (

@@ -7,11 +7,7 @@ const Button: React.FC = () => {
   return (
     <button
       onClick={clickHandler}
-      style={{
-        border: "1px solid white",
-        paddingInline: "1rem",
-        margin: "0.5rem 0.1rem"
-      }}
+      className='block py-2 px-3 text-gray-200 rounded bg-purple-700 hover:bg-purple-800 mt-2'
     >
       Fetch another quote (after reload, invalidating cache)
     </button>

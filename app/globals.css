@@ -25,3 +25,11 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+main {
+  min-height: calc(100vh - 57px);
+}
+
+.nav-container {
+  height: 56px;
+}
