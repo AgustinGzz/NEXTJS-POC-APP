@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ToastProvider } from "../store/toast-context";
 import Navbar from "./components/navbar/navbar";
 import "./globals.css";
 
@@ -18,10 +19,12 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <Navbar />
-        <main className='flex flex-col items-center justify-start px-24 py-2'>
-          {children}
-        </main>
+        <ToastProvider>
+          <Navbar />
+          <main className='flex flex-col items-center justify-start px-24 py-2'>
+            {children}
+          </main>
+        </ToastProvider>
       </body>
     </html>
   );
