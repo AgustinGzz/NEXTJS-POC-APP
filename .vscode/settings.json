@@ -1,3 +1,15 @@
 {
-  "editor.codeActionsOnSave": { "source.organizeImports": true }
+  "editor.codeActionsOnSave": { "source.organizeImports": true },
+  "tailwindCSS.includeLanguages": {
+    "javascript": "javascript",
+    "javascriptreact": "javascriptreact",
+    "typescript": "typescript",
+    "typescriptreact": "typescriptreact",
+    "html": "HTML"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["Classes \\=([^;]*);", "'([^']*)'"],
+    ["Classes \\=([^;]*);", "\"([^\"]*)\""],
+    ["Classes \\=([^;]*);", "\\`([^\\`]*)\\`"]
+  ]
 }
