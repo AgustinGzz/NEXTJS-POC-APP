@@ -81,7 +81,7 @@ export const ToastProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [toastsState, toastsDispatch] = useReducer(toastsReducer, []);
   const toastVariant = toastVariants[0];
   const positionClasses =
-    "flex items-center w-full max-w-xs p-4 space-x-4 rtl:space-x-reverse divide-x rtl:divide-x-reverse rounded-lg space-x";
+    "flex items-center w-full max-w-xs space-x-4 p-4 divide-x rounded-lg rtl:space-x-reverse rtl:divide-x-reverse";
   return (
     <>
       {children}

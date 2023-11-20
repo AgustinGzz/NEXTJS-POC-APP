@@ -1,6 +1,6 @@
+import Checkbox from "@/components/checkbox";
 import { readFromJSON, writeToJSON } from "@/utils/fileSystem";
 import { revalidatePath } from "next/cache";
-import Checkbox from "../components/checkbox";
 
 const WriteComponent: React.FC = async () => {
   async function saveFile(formData: FormData) {
