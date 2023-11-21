@@ -1,7 +1,7 @@
 const Feature1: React.FC = () => {
   return (
-    <div>
-      <p>you successfully accessed feature 1</p>
+    <div className='block p-6 px-10 bg-green-600 rounded-2xl'>
+      Feature 1 is here!
     </div>
   );
 };
