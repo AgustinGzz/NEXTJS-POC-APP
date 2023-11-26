@@ -143,7 +143,7 @@ export const ToastProvider: React.FC<PropsWithChildren> = ({ children }) => {
       }}
     >
       {children}
-      <div className='fixed bottom-0 end-0 flex flex-col items-center justify-end gap-1 me-2'>
+      <div className='fixed bottom-0 end-0 flex flex-col items-center justify-end gap-1 me-2 mb-2'>
         {toastsState.map((toast) => (
           <div
             className={`${styles.toast} ${
