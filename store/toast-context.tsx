@@ -6,8 +6,14 @@ import infoIcon from "@/public/svgs/info.svg";
 import successIcon from "@/public/svgs/success.svg";
 import warningIcon from "@/public/svgs/warning.svg";
 import Image from "next/image";
-import { PropsWithChildren, createContext, useReducer } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useCallback,
+  useReducer
+} from "react";
 import { v4 as uuid } from "uuid";
+import styles from "./toast.module.css";
 
 const defaultCloseTimeInSeconds = 10;
 const toastVariants = [
@@ -39,6 +45,7 @@ type State = ({
   id: string;
   message: string;
   duration?: number;
+  isFading?: boolean;
 } & Toast)[];
 type Action =
   | {
@@ -55,7 +62,14 @@ type Action =
       payload: {
         id: string;
       };
-    };
+    }
+  | {
+      type: "fadeToast";
+      payload: {
+        id: string;
+      };
+    }
+  | { type: "removeAllToasts"; payload: {} };
 const toastsReducer = (state: State, action: Action): State => {
   const { type, payload } = action;
   switch (type) {
@@ -64,12 +78,20 @@ const toastsReducer = (state: State, action: Action): State => {
         (toast) => toast.variant === payload.variant
       );
       const id = uuid();
-      setTimeout(() => {}, (payload.duration ?? 5) * 1000);
       return selectedToast
         ? [...state, { ...payload, ...selectedToast }]
         : state;
     case "removeToast":
       return state.filter((toast) => toast.id !== payload.id);
+    case "fadeToast":
+      const toasts = [...state];
+      const toastIndex = state.findIndex((toast) => toast.id === payload.id);
+      if (toasts[toastIndex]) {
+        toasts[toastIndex].isFading = true;
+      }
+      return toasts;
+    case "removeAllToasts":
+      return [];
   }
 };
 
@@ -79,9 +101,11 @@ type IncomingPayload = Omit<
 >;
 type Context = {
   addToast: (args: IncomingPayload) => void;
+  removeAllToasts: () => void;
 };
 const initialContext = {
-  addToast: () => {}
+  addToast: () => {},
+  removeAllToasts: () => {}
 };
 export const ToastContext = createContext<Context>(initialContext);
 
@@ -93,28 +117,40 @@ export const ToastProvider: React.FC<PropsWithChildren> = ({ children }) => {
     "bg-transparent text-black hover:text-gray-500 hover:bg-gray-800";
   const closeIconPositionClasses =
     "ms-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 p-1.5 inline-flex items-center justify-center h-8 w-8";
-  const addToastHandler = (payload: IncomingPayload) => {
+  const addToastHandler = useCallback((payload: IncomingPayload) => {
+    const removeTime =
+      payload?.duration && payload.duration > 2
+        ? payload.duration
+        : defaultCloseTimeInSeconds;
+    const fadeOutTime = removeTime - 1;
     const id = uuid();
     toastsDispatch({ type: "addToast", payload: { id, ...payload } });
-    setTimeout(
-      () => {
-        toastsDispatch({ type: "removeToast", payload: { id } });
-      },
-      (payload.duration ?? defaultCloseTimeInSeconds) * 1000
-    );
-  };
+    setTimeout(() => {
+      toastsDispatch({ type: "fadeToast", payload: { id } });
+    }, fadeOutTime * 1000);
+    setTimeout(() => {
+      toastsDispatch({ type: "removeToast", payload: { id } });
+    }, removeTime * 1000);
+  }, []);
+  const removeAllToastsHandler = useCallback(() => {
+    toastsDispatch({ type: "removeAllToasts", payload: {} });
+  }, []);
   return (
     <ToastContext.Provider
       value={{
-        addToast: (payload) => {
-          addToastHandler(payload);
-        }
+        addToast: addToastHandler,
+        removeAllToasts: removeAllToastsHandler
       }}
     >
       {children}
-      <div className='fixed bottom-0 end-0'>
+      <div className='fixed bottom-0 end-0 flex flex-col items-center justify-end gap-1 me-2'>
         {toastsState.map((toast) => (
-          <div className='me-2 mb-2' key={toast.id}>
+          <div
+            className={`${styles.toast} ${
+              toast.isFading ? styles.hide : styles.show
+            }`}
+            key={toast.id}
+          >
             <div
               id='toast-simple'
               className={`${positionClasses} ${toast.colorClasses}`}

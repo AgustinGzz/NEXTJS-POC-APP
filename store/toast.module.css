@@ -1,0 +1,29 @@
+.toast {
+  --timer-in: 0.3s;
+  --timer-out: 1s;
+  position: relative;
+  right: 0;
+  bottom: 0px;
+  transition:
+    bottom var(--timer-in) ease-in,
+    translate var(--timer-out) ease-out,
+    opacity var(--timer-out) ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    bottom: -100px;
+  }
+  to {
+    bottom: 0px;
+  }
+}
+
+.show {
+  animation: slideIn 0.2s ease-out;
+}
+
+.hide {
+  translate: 0% 100%;
+  opacity: 0;
+}
